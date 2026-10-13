@@ -7,8 +7,8 @@ namespace inventorySystem.Model
         [Key] public string MovementID { get; set; } = string.Empty;
         [Required] public string MovementType { get; set; } = string.Empty;
         public decimal CostPrice { get; set; }
-        public decimal SoldAt { get; set; }
-        [Required] public string UnitChange { get; set; } = string.Empty;
+        public decimal SoldPrice { get; set; }
+        [Required] public int UnitChange { get; set; }
         public string? Reference { get; set; }
         public DateTime ChangeDate { get; set; }
 

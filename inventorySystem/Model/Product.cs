@@ -13,11 +13,12 @@ namespace inventorySystem.Model
         public int Unit { get; set; }
 
         public decimal MRP { get; set; }
+        public string? ProductImage { get; set; }
 
         [Required] public string CategoryID { get; set; } = string.Empty;
         public Category? Category { get; set; }
 
-        public ICollection<StockMovement>s { get; set;} = new List<StockMovement>();
+        public ICollection<StockMovement> Movements { get; set;} = new List<StockMovement>();
 
     }
 }
