@@ -17,6 +17,7 @@ builder.Services.AddScoped<IPasswordHasher<inventorySystem.Model.User>,
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IStockService, StockService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
