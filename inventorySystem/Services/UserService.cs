@@ -3,6 +3,7 @@ using inventorySystem.Data;
 using inventorySystem.Dtos.Users;
 using inventorySystem.Model;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace inventorySystem.Services
 {
@@ -17,13 +18,13 @@ namespace inventorySystem.Services
 
         public async Task<User> CreateUser (CreateUserDto dto)
         {
-            var existingUser = _db.Users.FirstOrDefault(s => s.UserName == dto.UserName);
+            var existingUser = await _db.Users.FirstOrDefaultAsync(s => s.UserName == dto.UserName);
             if (existingUser != null)
             {
                 throw new InvalidOperationException("Username already exists");
             }
 
-            var existingEmail = _db.Users.FirstOrDefault(s => s.Email == dto.Email);
+            var existingEmail = await _db.Users.FirstOrDefaultAsync(s => s.Email == dto.Email);
             if (existingEmail != null)
             {
                 throw new InvalidOperationException("Username already exists"); 

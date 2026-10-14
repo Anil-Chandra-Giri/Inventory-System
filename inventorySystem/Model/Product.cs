@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace inventorySystem.Model
 {
@@ -16,7 +17,7 @@ namespace inventorySystem.Model
         public string? ProductImage { get; set; }
 
         [Required] public string CategoryID { get; set; } = string.Empty;
-        public Category? Category { get; set; }
+        [JsonIgnore] public Category? Category { get; set; }
 
         public ICollection<StockMovement> Movements { get; set;} = new List<StockMovement>();
 
