@@ -4,6 +4,7 @@ using inventorySystem.Dtos.Users;
 using inventorySystem.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace inventorySystem.Services
 {
@@ -30,13 +31,19 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("Username already exists"); 
             }
 
+            var Role = await _db.Roles.FirstOrDefaultAsync(r=>r.RoleName == dto.RoleName);
+            if (Role == null)
+            {
+                throw new InvalidOperationException("Role does not exist");
+            }
+
             var User = new User
             {
                 UserID = Guid.NewGuid().ToString(),
                 FullName = dto.FullName,
                 Email = dto.Email,
                 UserName = dto.UserName,
-                RoleID = dto.RoleID,
+                RoleID = Role.RoleID,
             };
             User.PasswordHash = _hasher.HashPassword(User, dto.Password);
             _db.Users.Add(User);

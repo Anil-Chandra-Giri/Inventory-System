@@ -33,7 +33,13 @@ namespace inventorySystem.Services
             if (verify == PasswordVerificationResult.Failed)
                 throw new InvalidOperationException("Invalid credentials.");
 
-            var roleName = user.Role?.RoleName ?? "Admin";
+            var roleId = user.RoleID;
+            var role = await _db.Roles.FirstOrDefaultAsync(r => r.RoleID == roleId);
+            if(role == null)
+            {
+                throw new InvalidOperationException("Role doesnot exist");
+            }
+            string roleName = role.RoleName;
             var expiresAt = DateTime.UtcNow.AddMinutes(_jwt.ExpiryMinutes);
 
             var claims = new List<Claim>

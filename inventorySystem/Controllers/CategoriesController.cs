@@ -1,12 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using inventorySystem.Dtos.Categories;
+using inventorySystem.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace inventorySystem.Controllers
 {
-    public class CategoriesController : Controller
+    [ApiController]
+    [Route("api/categories")]
+    public class CategoriesController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly ICategoryService _svc;
+
+        public CategoriesController(ICategoryService svc)
         {
-            return View();
+            _svc = svc;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CategoryDto>> Create(CreateCategoryDto dto)
+        {
+            var created = await _svc.Create(dto);
+            return Ok("Category Created");
         }
     }
 }
