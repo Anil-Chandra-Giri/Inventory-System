@@ -21,5 +21,6 @@ namespace inventorySystem.Controllers
             var created = await _svc.Create(dto);
             return Ok("Role created");
         }
+
     }
 }

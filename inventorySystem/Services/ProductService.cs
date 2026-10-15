@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace inventorySystem.Services
 {
-    public class ProductService: IProductService
+    public class ProductService : IProductService
     {
         private readonly AppDbContext _db;
-        public ProductService(AppDbContext db) 
+        public ProductService(AppDbContext db)
         {
             _db = db;
         }
@@ -31,7 +31,7 @@ namespace inventorySystem.Services
 
             if (productImage != null)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "uploads", "products");
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "products");
 
                 Directory.CreateDirectory(uploadsFolder);
 
@@ -51,7 +51,7 @@ namespace inventorySystem.Services
 
             string generatedCode = $"{categoryCode}-{productCode}-{(count + 1):D3}";
 
-            var Product = new Product 
+            var Product = new Product
             {
                 ProductID = Guid.NewGuid().ToString(),
                 ProductCode = generatedCode,
@@ -60,13 +60,51 @@ namespace inventorySystem.Services
                 Unit = product.Unit,
                 MRP = product.MRP,
                 CategoryID = category.CategoryID,
-
             };
 
             _db.Products.Add(Product);
             await _db.SaveChangesAsync();
 
             return Product;
+        }
+
+        public async Task<Product> UpdateProduct(string productcode, UpdateProductDto Dto)
+        {
+            var product = await _db.Products.Include(c => c.Category).FirstOrDefaultAsync(x => x.ProductCode == productcode);
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found");
+            }
+            product.ProductName = Dto.ProductName;
+            product.MRP = Dto.MRP;
+            product.Unit = Dto.Unit;
+            product.CategoryID = Dto.CategoryId;
+            return product;
+        }
+
+
+        public async Task<List<Product>> GetAllProducts()
+        {
+            return await _db.Products.Select(p => new Product
+            {
+                ProductID = p.ProductID,
+                ProductCode = p.ProductCode,
+                ProductName = p.ProductName,
+                MRP = p.MRP,
+                Unit = p.Unit,
+                ProductImage = p.ProductImage,
+                CategoryID = p.CategoryID,
+            }).ToListAsync();
+        }
+
+        public async Task<Product> GetProduct(string productcode)
+        {
+            var product = _db.Products.Where(u=>u.ProductCode == productcode).FirstOrDefault();
+            if (product == null)
+            {
+                throw new InvalidOperationException($"{productcode} does not exist");
+            }
+            return product;
         }
     }
 }
