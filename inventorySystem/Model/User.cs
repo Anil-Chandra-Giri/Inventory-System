@@ -13,7 +13,7 @@ namespace inventorySystem.Model
 
         [Required] public string UserName { get; set; } = string.Empty;
 
-        [Required] [JsonIgnore] public string PasswordHash { get; set; } = string.Empty;
+        [JsonIgnore] public string PasswordHash { get; set; } = string.Empty;
 
         [Required] public string RoleID { get; set; } = string.Empty;
         [JsonIgnore] public Role? Role { get; set; }
