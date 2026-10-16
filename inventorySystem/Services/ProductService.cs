@@ -79,8 +79,12 @@ namespace inventorySystem.Services
             product.MRP = Dto.MRP;
             product.Unit = Dto.Unit;
             product.CategoryID = Dto.CategoryId;
+
+            await _db.SaveChangesAsync();
+
             return product;
         }
+
 
 
         public async Task<List<Product>> GetAllProducts()

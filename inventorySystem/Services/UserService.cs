@@ -62,6 +62,7 @@ namespace inventorySystem.Services
 
             user.FullName = dto.FullName;
             user.Email = dto.Email;
+            await _db.SaveChangesAsync();
 
             return user;
         }
