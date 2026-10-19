@@ -12,8 +12,8 @@ using inventorySystem.Data;
 namespace inventorySystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261013040416_first")]
-    partial class first
+    [Migration("20261019104405_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

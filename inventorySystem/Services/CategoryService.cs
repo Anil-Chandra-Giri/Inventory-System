@@ -17,6 +17,13 @@ namespace inventorySystem.Services
         {
             int count = await _db.Categories.CountAsync();
             string generator = $"C{(count+1):D2}";
+
+            var alreadyExists = await _db.Categories.FirstOrDefaultAsync(e => e.CategoryName == dto.CategoryName);
+            if (alreadyExists != null)
+            {
+                throw new InvalidOperationException("Category Already Exists");
+            }
+
             var category = new Category
             {
                 CategoryID = generator,

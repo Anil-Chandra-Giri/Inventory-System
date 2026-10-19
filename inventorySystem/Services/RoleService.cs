@@ -19,6 +19,12 @@ namespace inventorySystem.Services
            int count = await _db.Roles.CountAsync();
            string generator = $"R{(count+1):D2}";
 
+           var alreadyexists = await _db.Roles.FirstOrDefaultAsync(e=> e.RoleName == dto.RoleName);
+            if (alreadyexists != null)
+            {
+                throw new InvalidOperationException("Role already exists");
+            }
+
           var role = new Role
             {
                 RoleID = generator,
