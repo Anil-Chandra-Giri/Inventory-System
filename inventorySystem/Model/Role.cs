@@ -8,6 +8,10 @@ namespace inventorySystem.Model
 
         [Required] public string RoleName { get; set; } = string.Empty;
 
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastUpdatedOn { get; set; }
+        public bool IsActive { get; set; }
+
         public ICollection<User> Users { get; set; } = new List<User>();
 
     }

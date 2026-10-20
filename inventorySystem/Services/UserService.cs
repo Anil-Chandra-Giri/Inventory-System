@@ -28,7 +28,7 @@ namespace inventorySystem.Services
             var existingEmail = await _db.Users.FirstOrDefaultAsync(s => s.Email == dto.Email);
             if (existingEmail != null)
             {
-                throw new InvalidOperationException("Username already exists");
+                throw new InvalidOperationException("Email already exists");
             }
 
             var Role = await _db.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.RoleName);
@@ -44,6 +44,9 @@ namespace inventorySystem.Services
                 Email = dto.Email,
                 UserName = dto.UserName,
                 RoleID = Role.RoleID,
+                CreatedOn= DateTime.UtcNow,
+                LastUpdatedOn= DateTime.UtcNow,
+                IsActive= true,
             };
             User.PasswordHash = _hasher.HashPassword(User, dto.Password);
             _db.Users.Add(User);
@@ -55,13 +58,14 @@ namespace inventorySystem.Services
         public async Task<User> UpdateUser(string UserName, UpdateUserDto dto)
         {
             var user = await _db.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.UserName == UserName);
-            if (user == null)
+            if (user == null || user.IsActive == false)
             {
                 throw new InvalidOperationException("User not found");
             }
 
             user.FullName = dto.FullName;
             user.Email = dto.Email;
+            user.LastUpdatedOn = DateTime.UtcNow;
             await _db.SaveChangesAsync();
 
             return user;
@@ -70,7 +74,7 @@ namespace inventorySystem.Services
         public async Task<User> ChangeRole(string UserName, ChangeRoleDto dto)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u=>u.UserName==UserName);
-            if (user == null)
+            if (user == null || user.IsActive==false)
             {
                 throw new InvalidOperationException("User not found");
             }
@@ -82,6 +86,7 @@ namespace inventorySystem.Services
             }
 
             user.RoleID = dto.RoleID;
+            user.LastUpdatedOn = DateTime.UtcNow;
             await _db.SaveChangesAsync();
 
             return user;
@@ -89,7 +94,9 @@ namespace inventorySystem.Services
 
         public async Task<List<User>> GetAllUser()
         {
-            return await _db.Users.Select
+            return await _db.Users.
+            Where(u=>u.IsActive)
+            .Select
             (u => new User
             {
                 UserID = u.UserID,
@@ -97,6 +104,9 @@ namespace inventorySystem.Services
                 FullName = u.FullName,
                 Email = u.Email,
                 RoleID = u.RoleID,
+                IsActive = u.IsActive,
+                CreatedOn = u.CreatedOn,
+                LastUpdatedOn = u.LastUpdatedOn,
             }
             ).OrderBy(u=>u.FullName).ToListAsync();
         }
@@ -104,11 +114,26 @@ namespace inventorySystem.Services
         public async Task<User> GetUser(string UserName)
         {
             var user = await _db.Users.Where(u => u.UserName == UserName).FirstOrDefaultAsync();
-            if (user == null)
+            if (user == null || user.IsActive == false)
             {
                 throw new InvalidOperationException($"Unable to find user {UserName}");
             }
             return user;
         }
+
+        public async Task<User> DeleteUser(string UserName)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u=> u.UserName == UserName);
+            if (user ==  null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            user.IsActive = false;
+            user.LastUpdatedOn = DateTime.Now;
+            await _db.SaveChangesAsync();
+            return user;
+        }
+
     }
 }

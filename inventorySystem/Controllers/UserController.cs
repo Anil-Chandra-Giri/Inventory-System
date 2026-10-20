@@ -67,5 +67,24 @@ namespace inventorySystem.Controllers
             var user = await _userService.GetUser(UserName);
             return user is null ? NotFound() : Ok(user);
         }
+
+        [HttpDelete("DeleteUser")]
+        public async Task<IActionResult> DeleteUser(string userName)
+        {
+            try
+            {
+                var user = await _userService.DeleteUser(userName);
+
+                return Ok(new
+                {
+                    message = "User deactivated successfully.",
+                    user = new { user.UserName, user.IsActive }
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
     }
 }

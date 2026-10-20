@@ -10,5 +10,6 @@ namespace inventorySystem.Services
         Task<User> ChangeRole(string UserName, ChangeRoleDto dto);
         Task<List<User>> GetAllUser();
         Task<User>GetUser(string UserName);
+        Task<User> DeleteUser(string UserName);
     }
 }

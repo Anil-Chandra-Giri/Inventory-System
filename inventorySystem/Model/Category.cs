@@ -7,6 +7,9 @@ namespace inventorySystem.Model
         [Key] public string CategoryID { get; set; } = string.Empty;
 
         [Required] public string CategoryName { get; set; } = string.Empty;
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastUpdatedOn { get; set; }
+        public bool IsActive { get; set; }
 
         public ICollection<Product> Products { get; set; } = new List<Product>();
 

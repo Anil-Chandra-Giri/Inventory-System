@@ -16,6 +16,10 @@ namespace inventorySystem.Model
         public decimal MRP { get; set; }
         public string? ProductImage { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastUpdatedOn { get; set; }
+        public bool IsActive { get; set; }
+
         [Required] public string CategoryID { get; set; } = string.Empty;
         [JsonIgnore] public Category? Category { get; set; }
 
