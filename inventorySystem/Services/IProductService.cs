@@ -9,5 +9,6 @@ namespace inventorySystem.Services
         Task<Product> UpdateProduct(string productcode, UpdateProductDto Dto);
         Task<List<Product>> GetAllProducts();
         Task<Product> GetProduct(string productcode);
+        Task<Product> DeleteProduct(string productcode);
     }
 }

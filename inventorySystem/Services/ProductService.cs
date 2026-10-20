@@ -60,6 +60,9 @@ namespace inventorySystem.Services
                 Unit = product.Unit,
                 MRP = product.MRP,
                 CategoryID = category.CategoryID,
+                IsActive = true,
+                CreatedOn = DateTime.Now,
+                LastUpdatedOn = DateTime.Now,
             };
 
             _db.Products.Add(Product);
@@ -71,14 +74,16 @@ namespace inventorySystem.Services
         public async Task<Product> UpdateProduct(string productcode, UpdateProductDto Dto)
         {
             var product = await _db.Products.Include(c => c.Category).FirstOrDefaultAsync(x => x.ProductCode == productcode);
-            if (product == null)
+            if (product == null || product.IsActive==false)
             {
                 throw new InvalidOperationException("Product not found");
             }
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.CategoryName == Dto.CategoryName);
             product.ProductName = Dto.ProductName;
             product.MRP = Dto.MRP;
             product.Unit = Dto.Unit;
-            product.CategoryID = Dto.CategoryId;
+            product.CategoryID = category.CategoryID;
+            product.LastUpdatedOn = DateTime.Now;
 
             await _db.SaveChangesAsync();
 
@@ -89,7 +94,8 @@ namespace inventorySystem.Services
 
         public async Task<List<Product>> GetAllProducts()
         {
-            return await _db.Products.Select(p => new Product
+            return await _db.Products.
+            Where(p=>p.IsActive).Select(p => new Product
             {
                 ProductID = p.ProductID,
                 ProductCode = p.ProductCode,
@@ -98,16 +104,32 @@ namespace inventorySystem.Services
                 Unit = p.Unit,
                 ProductImage = p.ProductImage,
                 CategoryID = p.CategoryID,
+                IsActive = p.IsActive,
+                LastUpdatedOn = p.LastUpdatedOn,
             }).ToListAsync();
         }
 
         public async Task<Product> GetProduct(string productcode)
         {
             var product = _db.Products.Where(u=>u.ProductCode == productcode).FirstOrDefault();
-            if (product == null)
+            if (product == null || product.IsActive==false)
             {
                 throw new InvalidOperationException($"{productcode} does not exist");
             }
+            return product;
+        }
+
+        public async Task<Product> DeleteProduct(string productcode)
+        {
+            var product = await _db.Products.FirstOrDefaultAsync(p => p.ProductCode== productcode);
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found");
+            }
+
+            product.IsActive = false;
+            product.LastUpdatedOn = DateTime.Now;
+            await _db.SaveChangesAsync();
             return product;
         }
     }

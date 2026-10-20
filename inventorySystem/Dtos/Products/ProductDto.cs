@@ -27,7 +27,7 @@ namespace inventorySystem.Dtos.Products
             public string ProductName { get; set; } = string.Empty;
             public int Unit { get; set; }
             public decimal MRP { get; set; }
-            public string CategoryId { get; set; } = string.Empty;
+            public string CategoryName { get; set; } = string.Empty;
         }
     
 }

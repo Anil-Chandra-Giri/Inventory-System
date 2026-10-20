@@ -1,5 +1,6 @@
 ﻿using inventorySystem.Dtos.Products;
 using inventorySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inventorySystem.Controllers
@@ -55,6 +56,25 @@ namespace inventorySystem.Controllers
         {
             var p = await _productService.GetProduct(id);
             return p is null ? NotFound() : Ok(p);
+        }
+
+        [HttpDelete("DeleteProduct")]
+        public async Task<IActionResult> DeleteProduct(string productcode)
+        {
+            try
+            {
+                var product= await _productService.DeleteProduct(productcode);
+
+                return Ok(new
+                {
+                    message = "User deactivated successfully.",
+                    product = new { product.ProductCode, product.IsActive }
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
         }
     }
 }
