@@ -32,7 +32,7 @@ namespace inventorySystem.Services
             }
 
             var Role = await _db.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.RoleName);
-            if (Role == null)
+            if (Role == null || Role.IsActive==false)
             {
                 throw new InvalidOperationException("Role does not exist");
             }
@@ -63,8 +63,14 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("User not found");
             }
 
+            var role = await _db.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.RollName);
+            if (role == null || role.IsActive == false)
+            {
+                throw new InvalidOperationException("Role not found");
+            }
             user.FullName = dto.FullName;
             user.Email = dto.Email;
+            user.RoleID = role.RoleID;
             user.LastUpdatedOn = DateTime.UtcNow;
             await _db.SaveChangesAsync();
 
@@ -80,7 +86,7 @@ namespace inventorySystem.Services
             }
 
             var role = await _db.Roles.FindAsync(dto.RoleID);
-            if (role == null)
+            if (role == null || role.IsActive == false)
             {
                 throw new InvalidOperationException("Role does not exist.");
             }

@@ -23,6 +23,7 @@
     {
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public string RollName {  get; set; } = string.Empty;
     }
 
     public class ChangePasswordDto

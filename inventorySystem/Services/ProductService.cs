@@ -16,7 +16,7 @@ namespace inventorySystem.Services
         public async Task<Product> CreateProduct(CreateProductDto product, IFormFile? productImage)
         {
             var category = await _db.Categories.FirstOrDefaultAsync(c => c.CategoryName == product.CategoryName);
-            if (category == null)
+            if (category == null || category.IsActive==false)
             {
                 throw new InvalidOperationException("Category Does not exist");
             }
@@ -79,6 +79,11 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("Product not found");
             }
             var category = await _db.Categories.FirstOrDefaultAsync(c => c.CategoryName == Dto.CategoryName);
+            if (category == null || category.IsActive == false)
+            {
+                throw new InvalidOperationException("Category not found");
+            }
+
             product.ProductName = Dto.ProductName;
             product.MRP = Dto.MRP;
             product.Unit = Dto.Unit;

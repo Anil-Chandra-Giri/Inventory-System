@@ -28,7 +28,10 @@ namespace inventorySystem.Services
           var role = new Role
             {
                 RoleID = generator,
-                RoleName = dto.RoleName.Trim()
+                RoleName = dto.RoleName.Trim(),
+                CreatedOn = DateTime.Now,
+                LastUpdatedOn = DateTime.Now,
+                IsActive = true,
             };
 
             _db.Roles.Add(role);
@@ -37,5 +40,32 @@ namespace inventorySystem.Services
             return role;
         }
 
+        public async Task<List<Role>> GetAllRoles()
+        {
+            return await _db.Roles.Where(r => r.IsActive).Select(r => new Role
+            {
+                RoleID = r.RoleID,
+                RoleName = r.RoleName,
+                CreatedOn = r.CreatedOn,
+                LastUpdatedOn = r.LastUpdatedOn,
+                IsActive = r.IsActive,
+            }).ToListAsync();
+
+        }
+
+        public async Task<Role> DeleteRole(string RoleName)
+        {
+            var role = await _db.Roles.FirstOrDefaultAsync(e=> e.RoleName== RoleName);
+            if (role == null)
+            {
+                throw new InvalidOperationException("Role not found");
+            }
+
+            role.IsActive = false;
+            role.LastUpdatedOn = DateTime.Now;
+
+            await _db.SaveChangesAsync();
+            return role;
+        }
     }
 }

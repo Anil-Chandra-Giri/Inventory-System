@@ -1,4 +1,5 @@
 ﻿using inventorySystem.Dtos.Categories;
+using inventorySystem.Model;
 using inventorySystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,19 @@ namespace inventorySystem.Controllers
         {
             var created = await _svc.Create(dto);
             return Ok("Category Created");
+        }
+
+        [HttpGet("GetAllCategories")]
+        public async Task<ActionResult<List<Role>>> GetAllRoles()
+        {
+            return Ok(await _svc.GetAllCategories());
+        }
+
+
+        [HttpDelete("DeleteRole")]
+        public async Task<ActionResult> DeleteRole(string categoryName)
+        {
+            return Ok(await _svc.DeleteCategory(categoryName));
         }
     }
 }

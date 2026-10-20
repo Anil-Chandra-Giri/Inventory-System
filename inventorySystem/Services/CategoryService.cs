@@ -27,11 +27,40 @@ namespace inventorySystem.Services
             var category = new Category
             {
                 CategoryID = generator,
-                CategoryName = dto.CategoryName
+                CategoryName = dto.CategoryName,
+                CreatedOn = DateTime.Now,
+                LastUpdatedOn = DateTime.Now,
+                IsActive = true,
             };
 
             _db.Categories.Add(category);
             await _db.SaveChangesAsync();
+
+            return category;
+        }
+
+        public async Task<List<Category>> GetAllCategories()
+        {
+            return await _db.Categories.Where(c => c.IsActive).Select(c => new Category
+            {
+                CategoryID= c.CategoryID,
+                CategoryName= c.CategoryName,
+                CreatedOn= c.CreatedOn,
+                LastUpdatedOn= c.LastUpdatedOn,
+                IsActive= c.IsActive,
+            }).ToListAsync();
+        }
+
+        public async Task<Category> DeleteCategory(string categoryName)
+        {
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.CategoryName == categoryName);
+            if (category == null)
+            {
+                throw new InvalidOperationException("Category not found");
+            }
+
+            category.IsActive = false;
+            category.LastUpdatedOn = DateTime.Now;
 
             return category;
         }
