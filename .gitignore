@@ -22,6 +22,7 @@
 !.env.example
 appsettings.Development.json
 secrets.json
+appsettings.json
 
 # Operating system
 Thumbs.db
