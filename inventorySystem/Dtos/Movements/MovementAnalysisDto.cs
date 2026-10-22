@@ -1,4 +1,6 @@
-﻿namespace inventorySystem.Dtos.Movements
+﻿using inventorySystem.Enums;
+
+namespace inventorySystem.Dtos.Movements
 {
     public class MovementAnalysisDto
     {
@@ -12,7 +14,7 @@
     public class StockMovementDetailDto
     {
         public DateTime ChangeDate { get; set; }
-        public string MovementType { get; set; } = string.Empty;
+        public MovementType MovementType { get; set; } 
         public int UnitChange { get; set; }
         public string? Reference { get; set; }
     }

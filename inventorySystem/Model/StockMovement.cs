@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using inventorySystem.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace inventorySystem.Model
 {
     public class StockMovement
     {
         [Key] public string MovementID { get; set; } = string.Empty;
-        [Required] public string MovementType { get; set; } = string.Empty;
+        [Required]public MovementType MovementType { get; set; }
         public decimal CostPrice { get; set; }
         public decimal SoldPrice { get; set; }
         [Required] public int UnitChange { get; set; }

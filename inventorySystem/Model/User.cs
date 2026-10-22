@@ -19,7 +19,7 @@ namespace inventorySystem.Model
         public DateTime LastUpdatedOn { get; set; }
         public bool IsActive { get; set; }
 
-        [Required] public string RoleID { get; set; } = string.Empty;
+        [Required] public Guid RoleID { get; set; }
         [JsonIgnore] public Role? Role { get; set; }
     }
 }

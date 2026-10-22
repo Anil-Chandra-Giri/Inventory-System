@@ -4,7 +4,8 @@ namespace inventorySystem.Model
 {
     public class Category
     {
-        [Key] public string CategoryID { get; set; } = string.Empty;
+        [Key] public Guid CategoryID {  get; set; }
+        public string CategoryCode { get; set; } = string.Empty;
 
         [Required] public string CategoryName { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; }

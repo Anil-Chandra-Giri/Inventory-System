@@ -46,6 +46,11 @@ namespace inventorySystem.Services
             })
             .FirstOrDefaultAsync();
 
+            if (report == null)
+            {
+                throw new InvalidOperationException("Product not found");
+            }
+
             return report;
         }
     }

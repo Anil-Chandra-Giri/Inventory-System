@@ -4,7 +4,8 @@ namespace inventorySystem.Model
 {
     public class Role
     {
-        [Key] public string RoleID { get; set; } = string.Empty;
+        [Key] public Guid RoleID {  get; set; }
+        public string RoleCode { get; set; } = string.Empty;
 
         [Required] public string RoleName { get; set; } = string.Empty;
 

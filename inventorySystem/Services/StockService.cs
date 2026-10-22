@@ -1,5 +1,6 @@
 ﻿using inventorySystem.Data;
 using inventorySystem.Dtos.Stock;
+using inventorySystem.Enums;
 using inventorySystem.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,7 @@ namespace inventorySystem.Services
             var movement = new StockMovement
             {
                 MovementID = Guid.NewGuid().ToString(),
-                MovementType = "IN",
+                MovementType = Enums.MovementType.IN,
                 UnitChange = dto.Quantity,           
                 CostPrice = dto.CostPrice,
                 SoldPrice = 0,
@@ -58,7 +59,7 @@ namespace inventorySystem.Services
                     $"Insufficient stock. On-hand: {onHand}, requested: {dto.Quantity}.");
 
             var lastCost = await _db.StockMovements
-                .Where(m => m.ProductID == product.ProductID && m.MovementType == "IN")
+                .Where(m => m.ProductID == product.ProductID && m.MovementType == MovementType.IN)
                 .OrderByDescending(m => m.ChangeDate)
                 .Select(m => (decimal?)m.CostPrice)
                 .FirstOrDefaultAsync() ?? 0;
@@ -66,7 +67,7 @@ namespace inventorySystem.Services
             var movement = new StockMovement
             {
                 MovementID = Guid.NewGuid().ToString(),
-                MovementType = "OUT",
+                MovementType = MovementType.OUT,
                 UnitChange = -dto.Quantity,           
                 CostPrice = lastCost,
                 SoldPrice = dto.SoldPrice,

@@ -20,7 +20,7 @@ namespace inventorySystem.Model
         public DateTime LastUpdatedOn { get; set; }
         public bool IsActive { get; set; }
 
-        [Required] public string CategoryID { get; set; } = string.Empty;
+        [Required] public Guid CategoryID { get; set; }
         [JsonIgnore] public Category? Category { get; set; }
 
         public ICollection<StockMovement> Movements { get; set;} = new List<StockMovement>();

@@ -1,4 +1,6 @@
-﻿namespace inventorySystem.Dtos.Stock
+﻿using inventorySystem.Enums;
+
+namespace inventorySystem.Dtos.Stock
 {
     public class StockInDto
     {
@@ -19,7 +21,7 @@
     public class StockMovementDto
     {
         public string MovementID { get; set; } = string.Empty;
-        public string MovementType { get; set; } = string.Empty;  
+        public MovementType MovementType { get; set; } 
         public string ProductID { get; set; } = string.Empty;
         public string ProductCode { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;

@@ -1,5 +1,6 @@
 ﻿using inventorySystem.Data;
 using inventorySystem.Dtos.Movements;
+using inventorySystem.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace inventorySystem.Services
@@ -24,11 +25,11 @@ namespace inventorySystem.Services
                     ProductName = p.ProductName,
 
                     TotalStockIn = p.Movements
-                        .Where(m => m.ChangeDate >= start && m.ChangeDate <= end && m.MovementType == "IN")
+                        .Where(m => m.ChangeDate >= start && m.ChangeDate <= end && m.MovementType == MovementType.IN)
                         .Sum(m => (int?)m.UnitChange) ?? 0,
 
                     TotalStockOut = p.Movements
-                        .Where(m => m.ChangeDate >= start && m.ChangeDate <= end && m.MovementType == "OUT")
+                        .Where(m => m.ChangeDate >= start && m.ChangeDate <= end && m.MovementType == MovementType.OUT)
                         .Sum(m => (int?)Math.Abs(m.UnitChange)) ?? 0
                 })
                 .Where(p => p.TotalStockIn > 0 || p.TotalStockOut > 0)
@@ -41,10 +42,8 @@ namespace inventorySystem.Services
             var start = startDate.Date;
             var end = endDate.Date.AddDays(1).AddTicks(-1);
 
-            
-
             return await _db.StockMovements
-                .Where(m => m.Product.ProductCode == productCode && m.ChangeDate >= start && m.ChangeDate <= end)
+                .Where(m=>m.Product!=null && m.Product.ProductCode == productCode && m.ChangeDate >= start && m.ChangeDate <= end)
                 .OrderByDescending(m => m.ChangeDate)
                 .Select(m => new StockMovementDetailDto
                 {

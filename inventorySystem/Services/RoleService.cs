@@ -27,7 +27,7 @@ namespace inventorySystem.Services
 
           var role = new Role
             {
-                RoleID = generator,
+                RoleCode = generator,
                 RoleName = dto.RoleName.Trim(),
                 CreatedOn = DateTime.Now,
                 LastUpdatedOn = DateTime.Now,
@@ -44,7 +44,7 @@ namespace inventorySystem.Services
         {
             return await _db.Roles.Where(r => r.IsActive).Select(r => new Role
             {
-                RoleID = r.RoleID,
+                RoleCode = r.RoleCode,
                 RoleName = r.RoleName,
                 CreatedOn = r.CreatedOn,
                 LastUpdatedOn = r.LastUpdatedOn,

@@ -26,7 +26,7 @@ namespace inventorySystem.Services
 
             var category = new Category
             {
-                CategoryID = generator,
+                CategoryCode = generator,
                 CategoryName = dto.CategoryName,
                 CreatedOn = DateTime.Now,
                 LastUpdatedOn = DateTime.Now,
@@ -43,7 +43,7 @@ namespace inventorySystem.Services
         {
             return await _db.Categories.Where(c => c.IsActive).Select(c => new Category
             {
-                CategoryID= c.CategoryID,
+                CategoryCode= c.CategoryCode,
                 CategoryName= c.CategoryName,
                 CreatedOn= c.CreatedOn,
                 LastUpdatedOn= c.LastUpdatedOn,

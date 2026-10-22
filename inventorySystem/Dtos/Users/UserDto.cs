@@ -34,6 +34,6 @@
 
     public class ChangeRoleDto
     {
-        public string RoleID { get; set; } = string.Empty;
+        public string RoleCode { get; set; } = string.Empty;
     }
 }

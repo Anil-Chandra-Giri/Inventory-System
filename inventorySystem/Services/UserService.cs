@@ -3,7 +3,6 @@ using inventorySystem.Dtos.Users;
 using inventorySystem.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace inventorySystem.Services
 {
@@ -85,13 +84,13 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("User not found");
             }
 
-            var role = await _db.Roles.FindAsync(dto.RoleID);
+            var role = await _db.Roles.FindAsync(dto.RoleCode);
             if (role == null || role.IsActive == false)
             {
                 throw new InvalidOperationException("Role does not exist.");
             }
 
-            user.RoleID = dto.RoleID;
+            user.RoleID = role.RoleID;
             user.LastUpdatedOn = DateTime.UtcNow;
             await _db.SaveChangesAsync();
 
