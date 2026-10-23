@@ -38,13 +38,13 @@ namespace inventorySystem.Services
 
             var User = new User
             {
-                UserID = Guid.NewGuid().ToString(),
+                UserID = Guid.NewGuid(),
                 FullName = dto.FullName,
                 Email = dto.Email,
                 UserName = dto.UserName,
                 RoleID = Role.RoleID,
                 CreatedOn= DateTime.UtcNow,
-                LastUpdatedOn= DateTime.UtcNow,
+                LastUpdatedOn= null,
                 IsActive= true,
             };
             User.PasswordHash = _hasher.HashPassword(User, dto.Password);

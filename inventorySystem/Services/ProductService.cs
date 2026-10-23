@@ -2,15 +2,19 @@
 using inventorySystem.Dtos.Products;
 using inventorySystem.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace inventorySystem.Services
 {
     public class ProductService : IProductService
     {
         private readonly AppDbContext _db;
-        public ProductService(AppDbContext db)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ProductService(AppDbContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Product> CreateProduct(CreateProductDto product, IFormFile? productImage)
@@ -51,9 +55,18 @@ namespace inventorySystem.Services
 
             string generatedCode = $"{categoryCode}-{productCode}-{(count + 1):D3}";
 
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                throw new UnauthorizedAccessException("User not authorized");
+            }
+
+            var createdByUserId = Guid.Parse(userIdClaim);
+
             var Product = new Product
             {
-                ProductID = Guid.NewGuid().ToString(),
+                ProductID = Guid.NewGuid(),
                 ProductCode = generatedCode,
                 ProductName = product.ProductName,
                 ProductImage = imagePath,
@@ -62,7 +75,9 @@ namespace inventorySystem.Services
                 CategoryID = category.CategoryID,
                 IsActive = true,
                 CreatedOn = DateTime.Now,
+                CreatedByUserID = createdByUserId,
                 LastUpdatedOn = DateTime.Now,
+                UpdatedByUserID = null
             };
 
             _db.Products.Add(Product);
@@ -84,11 +99,21 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("Category not found");
             }
 
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                throw new UnauthorizedAccessException("User not authorized");
+            }
+
+            var updatedByUserId = Guid.Parse(userIdClaim);
+
             product.ProductName = Dto.ProductName;
             product.MRP = Dto.MRP;
             product.Unit = Dto.Unit;
             product.CategoryID = category.CategoryID;
             product.LastUpdatedOn = DateTime.Now;
+            product.UpdatedByUserID = updatedByUserId;
 
             await _db.SaveChangesAsync();
 

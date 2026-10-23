@@ -44,9 +44,9 @@ namespace inventorySystem.Services
 
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, user.UserID),
+                new(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(ClaimTypes.NameIdentifier, user.UserID),
+                new(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new(ClaimTypes.Name, user.UserName),
                 new(ClaimTypes.Role, roleName),                
                 new("fullName", user.FullName)

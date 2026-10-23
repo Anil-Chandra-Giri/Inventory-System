@@ -22,7 +22,7 @@ namespace inventorySystem.Dtos.Stock
     {
         public string MovementID { get; set; } = string.Empty;
         public MovementType MovementType { get; set; } 
-        public string ProductID { get; set; } = string.Empty;
+        public Guid ProductID { get; set; }
         public string ProductCode { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public int UnitChange { get; set; }

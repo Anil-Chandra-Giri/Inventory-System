@@ -2,10 +2,10 @@
 {
     public class StockReportDto
     {
-        public string ProductId { get; set; }
-        public string ProductCode { get; set; }
-        public string ProductName { get; set; }
-        public string Unit { get; set; }
+        public Guid ProductId { get; set; }
+        public string ProductCode { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
+        public string Unit { get; set; } = string.Empty;
         public decimal MRP { get; set; }
 
         public int CurrentStock { get; set; }

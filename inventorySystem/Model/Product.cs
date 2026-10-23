@@ -5,7 +5,7 @@ namespace inventorySystem.Model
 {
     public class Product
     {
-        [Key] public string ProductID { get; set; } = string.Empty;
+        [Key] public Guid ProductID { get; set; }
 
         [Required] public string ProductCode { get; set; } = string.Empty;
 
@@ -22,6 +22,13 @@ namespace inventorySystem.Model
 
         [Required] public Guid CategoryID { get; set; }
         [JsonIgnore] public Category? Category { get; set; }
+
+        public Guid CreatedByUserID { get; set; }
+
+        public User? CreatedByUser { get; set; }
+
+        public Guid? UpdatedByUserID { get; set; }
+        public User? UpdatedByUser { get; set; }
 
         public ICollection<StockMovement> Movements { get; set;} = new List<StockMovement>();
 

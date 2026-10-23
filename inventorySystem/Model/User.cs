@@ -6,7 +6,7 @@ namespace inventorySystem.Model
 {
     public class User
     {
-        [Key] public string UserID { get; set; } = string.Empty;
+        [Key] public Guid UserID { get; set; } 
         [Required] public string FullName { get; set; } = string.Empty;
 
         [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
@@ -16,7 +16,7 @@ namespace inventorySystem.Model
         [JsonIgnore] public string PasswordHash { get; set; } = string.Empty;
 
         public DateTime CreatedOn { get; set; }
-        public DateTime LastUpdatedOn { get; set; }
+        public DateTime? LastUpdatedOn { get; set; }
         public bool IsActive { get; set; }
 
         [Required] public Guid RoleID { get; set; }

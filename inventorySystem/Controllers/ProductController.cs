@@ -7,6 +7,7 @@ namespace inventorySystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin,Staff")]
     public class ProductController : Controller
     {
        private readonly IProductService _productService;

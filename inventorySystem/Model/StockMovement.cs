@@ -13,7 +13,7 @@ namespace inventorySystem.Model
         public string? Reference { get; set; }
         public DateTime ChangeDate { get; set; }
 
-        [Required] public string ProductID { get; set; } = string.Empty;
+        [Required] public Guid ProductID { get; set; }
         public Product? Product { get; set; }
 
     }
