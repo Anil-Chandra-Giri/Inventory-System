@@ -1,12 +1,14 @@
 ﻿using inventorySystem.Dtos.Stock;
 using inventorySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inventorySystem.Controllers
 {
         [ApiController]
         [Route("api/stock")]
-        public class StockController : ControllerBase
+        [Authorize(Roles = "Admin,Staff")]
+    public class StockController : ControllerBase
         {
             private readonly IStockService _svc;
 

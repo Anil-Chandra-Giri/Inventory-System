@@ -1,11 +1,13 @@
 ﻿using inventorySystem.Dtos.StockReport;
 using inventorySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inventorySystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin,Staff")]
     public class StockReportController : Controller
     {
         private readonly IStockReport _sr;

@@ -1,12 +1,14 @@
 ﻿using inventorySystem.Dtos.Categories;
 using inventorySystem.Model;
 using inventorySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inventorySystem.Controllers
 {
     [ApiController]
     [Route("api/categories")]
+    [Authorize(Roles = "Admin,Staff")]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _svc;

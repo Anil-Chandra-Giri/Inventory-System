@@ -8,7 +8,7 @@ namespace inventorySystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

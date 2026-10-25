@@ -1,12 +1,14 @@
 ﻿using inventorySystem.Dtos.Roles;
 using inventorySystem.Model;
 using inventorySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inventorySystem.Controllers
 {
     [ApiController]
     [Route("api/roles")]
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly IRoleService _svc;
