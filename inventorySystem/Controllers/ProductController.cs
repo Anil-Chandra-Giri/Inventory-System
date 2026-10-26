@@ -33,11 +33,11 @@ namespace inventorySystem.Controllers
         }
 
         [HttpPut("UpdateProduct")]
-        public async Task<ActionResult<ProductDto>> Update(string id, UpdateProductDto dto)
+        public async Task<ActionResult<ProductDto>> Update(string ProductCode, UpdateProductDto dto)
         {
             try
             {
-                var updated = await _productService.UpdateProduct(id, dto);
+                var updated = await _productService.UpdateProduct(ProductCode, dto);
                 return updated is null ? NotFound() : Ok(updated);
             }
             catch (InvalidOperationException ex)
@@ -52,10 +52,10 @@ namespace inventorySystem.Controllers
            return Ok(await _productService.GetAllProducts());
         }
 
-        [HttpGet("GetProductById")]
-        public async Task<ActionResult<ProductDto>> GetById(string id)
+        [HttpGet("GetProductByCode")]
+        public async Task<ActionResult<ProductDto>> GetById(string ProductCode)
         {
-            var p = await _productService.GetProduct(id);
+            var p = await _productService.GetProduct(ProductCode);
             return p is null ? NotFound() : Ok(p);
         }
 

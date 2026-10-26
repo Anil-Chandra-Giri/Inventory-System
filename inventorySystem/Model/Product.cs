@@ -25,10 +25,10 @@ namespace inventorySystem.Model
 
         public Guid CreatedByUserID { get; set; }
 
-        public User? CreatedByUser { get; set; }
+       [JsonIgnore] public User? CreatedByUser { get; set; }
 
         public Guid? UpdatedByUserID { get; set; }
-        public User? UpdatedByUser { get; set; }
+       [JsonIgnore] public User? UpdatedByUser { get; set; }
 
         public ICollection<StockMovement> Movements { get; set;} = new List<StockMovement>();
 

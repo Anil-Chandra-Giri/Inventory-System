@@ -61,7 +61,8 @@ namespace inventorySystem.Services
 
             category.IsActive = false;
             category.LastUpdatedOn = DateTime.Now;
-
+            await _db.SaveChangesAsync();
+            
             return category;
         }
     }

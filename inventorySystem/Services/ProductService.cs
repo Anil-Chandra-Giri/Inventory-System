@@ -135,6 +135,9 @@ namespace inventorySystem.Services
                 ProductImage = p.ProductImage,
                 CategoryID = p.CategoryID,
                 IsActive = p.IsActive,
+                CreatedOn = p.CreatedOn,
+                CreatedByUserID = p.CreatedByUserID,
+                UpdatedByUserID = p.UpdatedByUserID,
                 LastUpdatedOn = p.LastUpdatedOn,
             }).ToListAsync();
         }
@@ -157,7 +160,15 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("Product not found");
             }
 
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                throw new UnauthorizedAccessException("User not authorized");
+            }
+            var updatedByUserId = Guid.Parse(userIdClaim);
+
             product.IsActive = false;
+            product.UpdatedByUserID = updatedByUserId;
             product.LastUpdatedOn = DateTime.Now;
             await _db.SaveChangesAsync();
             return product;
