@@ -1,11 +1,13 @@
-﻿namespace inventorySystem.Dtos.Users
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace inventorySystem.Dtos.Users
 {
     public class UserDto
     {
         public string UserID { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
+        [EmailAddress] public string Email { get; set; } = string.Empty;
         public string RoleID { get; set; } = string.Empty;
         public string RoleName { get; set; } = string.Empty;
     }
@@ -14,7 +16,7 @@
     {
         public string UserName { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
+        [EmailAddress] public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string RoleName { get; set; } = string.Empty;
     }
@@ -22,8 +24,7 @@
     public class UpdateUserDto
     {
         public string FullName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string RollName {  get; set; } = string.Empty;
+        [EmailAddress]  public string Email { get; set; } = string.Empty;
     }
 
     public class ChangePasswordDto
@@ -34,6 +35,6 @@
 
     public class ChangeRoleDto
     {
-        public string RoleCode { get; set; } = string.Empty;
+        public string RoleName { get; set; } = string.Empty;
     }
 }
