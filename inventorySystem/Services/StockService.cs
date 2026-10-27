@@ -20,7 +20,7 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("Quantity must be greater than 0.");
 
             var product = await _db.Products
-                .FirstOrDefaultAsync(p => p.ProductCode == dto.ProductCode)
+                .FirstOrDefaultAsync(p => p.ProductCode == dto.ProductCode && p.IsActive == true)
                 ?? throw new InvalidOperationException($"Product '{dto.ProductCode}' not found.");
 
             var movement = new StockMovement
@@ -47,7 +47,7 @@ namespace inventorySystem.Services
                 throw new InvalidOperationException("Quantity must be greater than 0.");
 
             var product = await _db.Products
-                .FirstOrDefaultAsync(p => p.ProductCode == dto.ProductCode)
+                .FirstOrDefaultAsync(p => p.ProductCode == dto.ProductCode && p.IsActive == true)
                 ?? throw new InvalidOperationException($"Product '{dto.ProductCode}' not found.");
 
             var onHand = await _db.StockMovements

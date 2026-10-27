@@ -16,7 +16,7 @@ namespace inventorySystem.Services
         public async Task<List<StockReportDto>> AllStockReport()
         {
             var report = await _db.Products
-            .Select(p => new StockReportDto
+            .Where(p => p.IsActive == true).Select(p => new StockReportDto
             {
                 ProductId = p.ProductID,
                 ProductCode = p.ProductCode,
@@ -34,7 +34,7 @@ namespace inventorySystem.Services
         public async Task<StockReportDto> StockReport(string productCode)
         {
             var report = await _db.Products
-            .Where(p => p.ProductCode == productCode)
+            .Where(p => p.ProductCode == productCode && p.IsActive ==true)
             .Select(p => new StockReportDto
             {
                 ProductId = p.ProductID,
